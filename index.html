@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>링크컨설팅 교육장 이용 안내</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: 사용자가 현장에서 필요한 정보를 즉시 찾을 수 있도록 탭 기반 SPA 구조를 선택했습니다. '필수 정보', '오시는 길', '시설 안내', '주의사항', '퇴실 체크리스트' 5개의 탭으로 정보를 명확히 분류하여, 긴 스크롤 없이도 원하는 정보에 빠르게 접근할 수 있도록 설계했습니다. 이 구조는 특히 와이파이 비밀번호 확인이나 장비 사용법 등 긴급한 정보 조회가 필요한 사용자의 편의성을 극대화합니다. -->
+    <!-- Visualization & Content Choices: 데이터 시각화가 필요 없는 정보성 콘텐츠이므로, Chart.js 대신 탭(Tab) 인터페이스를 핵심 인터랙션으로 사용했습니다. 정보(와이파이, 연락처 등) -> 목표(빠른 확인 및 사용) -> 표현(아이콘을 곁들인 텍스트 카드) -> 인터랙션(탭 전환, 복사 버튼, 클릭 가능한 체크리스트) -> 정당성(사용자의 시간 절약 및 편의성 증대) -> 구현(Vanilla JS). 이를 통해 사용자가 정보를 소비하는 데 드는 인지적 노력을 최소화했습니다. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: #F8F7F4; 
+        }
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        .tab-btn.active {
+            border-color: #4A5568;
+            background-color: #4A5568;
+            color: #FFFFFF;
+        }
+        .content-panel {
+            display: none;
+        }
+        .content-panel.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto max-w-3xl p-4 sm:p-6 md:p-8">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">링크컨설팅 교육장 이용 안내</h1>
+            <p class="mt-2 text-gray-600">원활한 교육 진행을 위해 아래 내용을 꼭 참고해 주세요.</p>
+        </header>
+
+        <div class="bg-white rounded-2xl shadow-lg p-4 sm:p-6">
+            <nav id="tab-nav" class="flex flex-wrap justify-center border-b border-gray-200 mb-6 gap-2">
+                <button data-tab="info" class="tab-btn flex-grow sm:flex-grow-0 py-2 px-4 font-semibold text-gray-600 border-b-2 border-transparent rounded-t-lg hover:bg-gray-100 hover:text-gray-800 transition-colors duration-300 active">⭐ 필수 정보</button>
+                <button data-tab="location" class="tab-btn flex-grow sm:flex-grow-0 py-2 px-4 font-semibold text-gray-600 border-b-2 border-transparent rounded-t-lg hover:bg-gray-100 hover:text-gray-800 transition-colors duration-300">🚗 오시는 길</button>
+                <button data-tab="facilities" class="tab-btn flex-grow sm:flex-grow-0 py-2 px-4 font-semibold text-gray-600 border-b-2 border-transparent rounded-t-lg hover:bg-gray-100 hover:text-gray-800 transition-colors duration-300">💻 시설 이용</button>
+                <button data-tab="rules" class="tab-btn flex-grow sm:flex-grow-0 py-2 px-4 font-semibold text-gray-600 border-b-2 border-transparent rounded-t-lg hover:bg-gray-100 hover:text-gray-800 transition-colors duration-300">⚠️ 주의사항</button>
+                <button data-tab="checklist" class="tab-btn flex-grow sm:flex-grow-0 py-2 px-4 font-semibold text-gray-600 border-b-2 border-transparent rounded-t-lg hover:bg-gray-100 hover:text-gray-800 transition-colors duration-300">✅ 퇴실 체크</button>
+            </nav>
+
+            <div id="tab-content">
+                <div id="info" class="content-panel active">
+                    <div class="space-y-4">
+                        <div class="bg-gray-100 p-4 rounded-lg flex justify-between items-center">
+                            <div>
+                                <p class="font-semibold">Wi-Fi 네트워크</p>
+                                <p class="text-lg text-gray-900">liink_5G</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-100 p-4 rounded-lg flex justify-between items-center">
+                            <div>
+                                <p class="font-semibold">Wi-Fi 비밀번호</p>
+                                <p id="wifi-password" class="text-lg text-gray-900">liink1104</p>
+                            </div>
+                            <button onclick="copyToClipboard('wifi-password')" class="bg-gray-200 text-sm font-bold py-2 px-3 rounded-md hover:bg-gray-300 transition">복사</button>
+                        </div>
+                        <div class="bg-gray-100 p-4 rounded-lg flex justify-between items-center">
+                            <div>
+                                <p class="font-semibold">담당자 연락처</p>
+                                <p class="text-lg text-gray-900">010-6702-9644</p>
+                            </div>
+                            <a href="tel:010-6702-9644" class="bg-blue-500 text-white text-sm font-bold py-2 px-3 rounded-md hover:bg-blue-600 transition">전화</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="location" class="content-panel">
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="font-bold text-lg mb-2">📍 주소</h3>
+                            <p class="text-gray-700">서울특별시 서초구 서초중앙로 20길 28, 골드빌딩 5층 (교대역 13번 출구, 도보 3분)</p>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg mb-2">🔑 건물 비밀번호</h3>
+                            <p class="bg-yellow-100 text-yellow-800 p-3 rounded-lg text-center font-mono text-xl tracking-wider">
+                                <span class="font-sans">열쇠(🔑)</span> → 2459 → <span class="font-sans">종(🔔)</span>
+                            </p>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg mb-2">🅿️ 주차 안내 (유료)</h3>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li><strong>서초구립 무궁공영주차장:</strong> 시간 당 3,000원 (연중무휴)</li>
+                                <li><strong>서초우정빌딩주차장:</strong> 시간 당 4,000원 (주말 이용 권장)</li>
+                                <li><strong>교대역 동측 공영주차장:</strong> 시간 당 4,800원 (주말 이용 불가)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="facilities" class="content-panel">
+                    <ul class="space-y-4">
+                        <li class="p-4 bg-gray-50 rounded-lg">
+                            <p class="font-bold mb-1">빔 프로젝터</p>
+                            <p class="text-gray-600">검정색 리모컨 전원 ON ▶ 노트북과 HDMI 케이블 연결</p>
+                        </li>
+                        <li class="p-4 bg-gray-50 rounded-lg">
+                            <p class="font-bold mb-1">스크린</p>
+                            <p class="text-gray-600">에어컨 왼쪽 벽, 흰색 버튼으로 조절</p>
+                        </li>
+                        <li class="p-4 bg-gray-50 rounded-lg">
+                            <p class="font-bold mb-1">마이크 및 앰프</p>
+                            <p class="text-gray-600">강사 테이블, 마이크 전원 ON 후 사용</p>
+                        </li>
+                        <li class="p-4 bg-gray-50 rounded-lg">
+                            <p class="font-bold mb-1">정수기</p>
+                            <p class="text-gray-600">교육장 내 화장실 옆에 위치</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="rules" class="content-panel">
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <span class="mr-3 text-2xl">🚭</span>
+                            <div>
+                                <p class="font-semibold">금연</p>
+                                <p class="text-gray-600">쾌적한 환경을 위해 교육장 건물 내 절대 금연입니다.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                             <span class="mr-3 text-2xl">🍕</span>
+                            <div>
+                                <p class="font-semibold">음식물 제한</p>
+                                <p class="text-gray-600">간단한 다과와 음료 외, 냄새가 심한 음식물은 반입을 삼가주시기 바랍니다.</p>
+                            </div>
+                        </li>
+                         <li class="flex items-start">
+                             <span class="mr-3 text-2xl">⏰</span>
+                            <div>
+                                <p class="font-semibold">시간 엄수</p>
+                                <p class="text-gray-600">대관 시작 및 종료 시간 외 준비/정리 시간 30분이 제공됩니다. (예: 09~18시 대관 시 08:30~18:30 이용 가능)</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                             <span class="mr-3 text-2xl">🚨</span>
+                            <div>
+                                <p class="font-semibold">시설물 관리</p>
+                                <p class="text-gray-600">이용자 부주의로 인한 기물 파손/분실 시 원가 배상이 청구될 수 있습니다.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="mr-3 text-2xl">🗑️</span>
+                            <div>
+                                <p class="font-semibold">퇴실 정리</p>
+                                <p class="text-gray-600">사용 후 발생한 모든 쓰레기는 직접 수거하여 퇴실해 주시면 감사하겠습니다.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="checklist" class="content-panel">
+                    <p class="text-center mb-4 text-gray-600">다음 분들을 위해 아래 사항들을 한 번 더 확인해 주세요.</p>
+                    <div id="checklist-items" class="space-y-3">
+                        <label class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition">
+                            <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-gray-700 focus:ring-gray-600">
+                            <span class="ml-3 text-gray-800">테이블과 의자를 원래대로 정리했나요?</span>
+                        </label>
+                         <label class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition">
+                            <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-gray-700 focus:ring-gray-600">
+                            <span class="ml-3 text-gray-800">빔 프로젝터, 마이크, 앰프, 에어컨 전원을 껐나요?</span>
+                        </label>
+                         <label class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition">
+                            <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-gray-700 focus:ring-gray-600">
+                            <span class="ml-3 text-gray-800">열어 놓은 창문은 모두 닫았나요?</span>
+                        </label>
+                         <label class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition">
+                            <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-gray-700 focus:ring-gray-600">
+                            <span class="ml-3 text-gray-800">쓰레기는 모두 수거했나요?</span>
+                        </label>
+                         <label class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition">
+                            <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-gray-700 focus:ring-gray-600">
+                            <span class="ml-3 text-gray-800">담당자에게 퇴실 연락을 완료했나요?</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="text-center text-sm text-gray-400 mt-8">
+            &copy; 2025 Liink Consulting. All Rights Reserved.
+        </footer>
+    </div>
+    
+    <div id="toast" class="fixed bottom-5 right-5 bg-gray-900 text-white py-2 px-4 rounded-lg shadow-xl transition-opacity duration-300 opacity-0">
+        복사되었습니다!
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const contentPanels = document.querySelectorAll('.content-panel');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(item => item.classList.remove('active'));
+                    contentPanels.forEach(panel => panel.classList.remove('active'));
+
+                    tab.classList.add('active');
+                    const targetPanel = document.getElementById(tab.dataset.tab);
+                    if (targetPanel) {
+                        targetPanel.classList.add('active');
+                    }
+                });
+            });
+
+            const checklistItems = document.querySelectorAll('#checklist-items input[type="checkbox"]');
+            checklistItems.forEach(item => {
+                item.addEventListener('change', (e) => {
+                    const label = e.target.closest('label');
+                    const span = label.querySelector('span');
+                    if (e.target.checked) {
+                        span.classList.add('line-through', 'text-gray-400');
+                    } else {
+                        span.classList.remove('line-through', 'text-gray-400');
+                    }
+                });
+            });
+        });
+
+        function copyToClipboard(elementId) {
+            const textToCopy = document.getElementById(elementId).innerText;
+            
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = textToCopy;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+
+            const toast = document.getElementById('toast');
+            toast.style.opacity = '1';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
