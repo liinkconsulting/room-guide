@@ -5,14 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>링크컨설팅 교육장 이용 안내</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chosen Palette: Warm Neutrals -->
-    <!-- Application Structure Plan: 사용자가 현장에서 필요한 정보를 즉시 찾을 수 있도록 탭 기반 SPA 구조를 선택했습니다. '필수 정보', '오시는 길', '시설 안내', '주의사항', '퇴실 체크리스트' 5개의 탭으로 정보를 명확히 분류하여, 긴 스크롤 없이도 원하는 정보에 빠르게 접근할 수 있도록 설계했습니다. 이 구조는 특히 와이파이 비밀번호 확인이나 장비 사용법 등 긴급한 정보 조회가 필요한 사용자의 편의성을 극대화합니다. -->
-    <!-- Visualization & Content Choices: 데이터 시각화가 필요 없는 정보성 콘텐츠이므로, Chart.js 대신 탭(Tab) 인터페이스를 핵심 인터랙션으로 사용했습니다. 정보(와이파이, 연락처 등) -> 목표(빠른 확인 및 사용) -> 표현(아이콘을 곁들인 텍스트 카드) -> 인터랙션(탭 전환, 복사 버튼, 클릭 가능한 체크리스트) -> 정당성(사용자의 시간 절약 및 편의성 증대) -> 구현(Vanilla JS). 이를 통해 사용자가 정보를 소비하는 데 드는 인지적 노력을 최소화했습니다. -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body {
             font-family: 'Pretendard', sans-serif;
-            background-color: #F8F7F4; 
+            background-color: #F8F7F4;
         }
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
         .tab-btn.active {
@@ -64,6 +60,12 @@
                         </div>
                         <div class="bg-gray-100 p-4 rounded-lg flex justify-between items-center">
                             <div>
+                                <p class="font-semibold">교육장 출입문 비밀번호</p>
+                                <p id="room-password" class="text-lg text-gray-900">0000</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-100 p-4 rounded-lg flex justify-between items-center">
+                            <div>
                                 <p class="font-semibold">담당자 연락처</p>
                                 <p class="text-lg text-gray-900">010-6702-9644</p>
                             </div>
@@ -76,7 +78,8 @@
                     <div class="space-y-6">
                         <div>
                             <h3 class="font-bold text-lg mb-2">📍 주소</h3>
-                            <p class="text-gray-700">서울특별시 서초구 서초중앙로 20길 28, 골드빌딩 5층 (교대역 13번 출구, 도보 3분)</p>
+                            <p class="text-gray-700">서울특별시 서초구 서초중앙로 20길 28, 골드빌딩 5층 (지하철 2, 3호선 교대역 인근)</p>
+                            <p class="text-gray-700 mt-1">지하철 2호선 5번 출구 또는 3호선 13번 출구 이용</p>
                         </div>
                         <div>
                             <h3 class="font-bold text-lg mb-2">🔑 건물 비밀번호</h3>
@@ -126,21 +129,21 @@
                             </div>
                         </li>
                         <li class="flex items-start">
-                             <span class="mr-3 text-2xl">🍕</span>
+                               <span class="mr-3 text-2xl">🍕</span>
                             <div>
                                 <p class="font-semibold">음식물 제한</p>
                                 <p class="text-gray-600">간단한 다과와 음료 외, 냄새가 심한 음식물은 반입을 삼가주시기 바랍니다.</p>
                             </div>
                         </li>
-                         <li class="flex items-start">
-                             <span class="mr-3 text-2xl">⏰</span>
+                        <li class="flex items-start">
+                               <span class="mr-3 text-2xl">⏰</span>
                             <div>
                                 <p class="font-semibold">시간 엄수</p>
                                 <p class="text-gray-600">대관 시작 및 종료 시간 외 준비/정리 시간 30분이 제공됩니다. (예: 09~18시 대관 시 08:30~18:30 이용 가능)</p>
                             </div>
                         </li>
                         <li class="flex items-start">
-                             <span class="mr-3 text-2xl">🚨</span>
+                               <span class="mr-3 text-2xl">🚨</span>
                             <div>
                                 <p class="font-semibold">시설물 관리</p>
                                 <p class="text-gray-600">이용자 부주의로 인한 기물 파손/분실 시 원가 배상이 청구될 수 있습니다.</p>
@@ -150,7 +153,7 @@
                             <span class="mr-3 text-2xl">🗑️</span>
                             <div>
                                 <p class="font-semibold">퇴실 정리</p>
-                                <p class="text-gray-600">사용 후 발생한 모든 쓰레기는 직접 수거하여 퇴실해 주시면 감사하겠습니다. (본 건물, 음식물 쓰레기 처리 불가)</p>
+                                <p class="text-gray-600">사용 후 발생한 모든 쓰레기는 직접 수거하여 퇴실해 주시기 바랍니다. (본 건물은 음식물 쓰레기 수거가 불가능합니다.)</p>
                             </div>
                         </li>
                     </ul>
@@ -158,26 +161,37 @@
 
                 <div id="checklist" class="content-panel">
                     <p class="text-center mb-4 text-gray-600">다음 분들을 위해 아래 사항들을 한 번 더 확인해 주세요.</p>
+                    <div class="mb-6 bg-blue-50 p-4 rounded-lg">
+                        <h4 class="font-bold text-blue-700 mb-2">🔒 문 잠그는 법</h4>
+                        <ol class="list-decimal list-inside text-gray-700 space-y-1">
+                            <li>문을 살짝 당긴 상태에서 잠금장치를 손으로 가볍게 눌러주세요.</li>
+                            <li>문이 완전히 닫혔는지 확인합니다.</li>
+                        </ol>
+                    </div>
                     <div id="checklist-items" class="space-y-3">
                         <label class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition">
                             <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-gray-700 focus:ring-gray-600">
                             <span class="ml-3 text-gray-800">테이블과 의자를 원래대로 정리했나요?</span>
                         </label>
-                         <label class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition">
+                           <label class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition">
                             <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-gray-700 focus:ring-gray-600">
                             <span class="ml-3 text-gray-800">빔 프로젝터, 마이크, 앰프, 에어컨 전원을 껐나요?</span>
                         </label>
-                         <label class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition">
+                           <label class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition">
                             <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-gray-700 focus:ring-gray-600">
                             <span class="ml-3 text-gray-800">열어 놓은 창문은 모두 닫았나요?</span>
                         </label>
-                         <label class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition">
+                           <label class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition">
                             <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-gray-700 focus:ring-gray-600">
                             <span class="ml-3 text-gray-800">쓰레기는 모두 수거했나요?</span>
                         </label>
-                         <label class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition">
+                           <label class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition">
                             <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-gray-700 focus:ring-gray-600">
                             <span class="ml-3 text-gray-800">담당자에게 퇴실 연락을 완료했나요?</span>
+                        </label>
+                        <label class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition">
+                            <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-gray-700 focus:ring-gray-600">
+                            <span class="ml-3 text-gray-800">문을 잘 닫고 잠금장치를 확인했나요?</span>
                         </label>
                     </div>
                 </div>
